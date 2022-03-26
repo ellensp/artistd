@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2021 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -21,36 +21,6 @@
  */
 #pragma once
 
-/**
- * sd/SdFile.h
- *
- * Arduino SdFat Library
- * Copyright (c) 2009 by William Greiman
- *
- * This file is part of the Arduino Sd2Card Library
- */
+#define BOARD_INFO_NAME "BTT SKR V2 Rev.B"
 
-#include "SdBaseFile.h"
-
-#include <stdint.h>
-#include <string.h>
-
-/**
- * \class SdFile
- * \brief SdBaseFile with Print.
- */
-class SdFile : public SdBaseFile {
- public:
-  SdFile() {}
-  SdFile(const char *name, uint8_t oflag);
-  #if ARDUINO >= 100
-    size_t write(uint8_t b);
-  #else
-    void write(uint8_t b);
-  #endif
-
-  int16_t write(const void *buf, uint16_t nbyte);
-  void write(const char *str);
-  void write_P(PGM_P str);
-  void writeln_P(PGM_P str);
-};
+#include "pins_BTT_SKR_V2_0_common.h"

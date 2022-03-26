@@ -339,14 +339,12 @@ void disable_all_steppers() {
 }
 
 /**
- * A Print Job exists when the timer is running or SD printing
+ * A Print Job exists when the timer is running or SD is printing
  */
-bool printJobOngoing() {
-  return print_job_timer.isRunning() || IS_SD_PRINTING();
-}
+bool printJobOngoing() { return print_job_timer.isRunning() || IS_SD_PRINTING(); }
 
 /**
- * Printing is active when the print job timer is running
+ * Printing is active when a job is underway but not paused
  */
 bool printingIsActive() {
   return !did_pause_print && (print_job_timer.isRunning() || IS_SD_PRINTING());
@@ -375,7 +373,7 @@ void startOrResumeJob() {
 
   inline void abortSDPrinting() {
     IF_DISABLED(NO_SD_AUTOSTART, card.autofile_cancel());
-    card.endFilePrint(TERN_(SD_RESORT, true));
+    card.abortFilePrintNow(TERN_(SD_RESORT, true));
 
     queue.clear();
     quickstop_stepper();
@@ -398,8 +396,8 @@ void startOrResumeJob() {
   }
 
   inline void finishSDPrinting() {
-    if (queue.enqueue_one_P(PSTR("M1001"))) {
-      marlin_state = MF_RUNNING;
+    if (queue.enqueue_one_P(PSTR("M1001"))) { // Keep trying until it gets queued
+      marlin_state = MF_RUNNING;              // Signal to stop trying
       TERN_(PASSWORD_AFTER_SD_PRINT_END, password.lock_machine());
       TERN_(DGUS_LCD_UI_MKS, ScreenHandler.SDPrintingFinished());
     }
@@ -493,6 +491,10 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
       SERIAL_ERROR_MSG(STR_KILL_BUTTON);
       kill();
     }
+  #endif
+
+  #if HAS_FREEZE_PIN
+    Stepper::frozen = !READ(FREEZE_PIN);
   #endif
 
   #if HAS_HOME
@@ -804,6 +806,7 @@ void idle(TERN_(ADVANCED_PAUSE_FEATURE, bool no_stepper_sleep/*=false*/)) {
     if (!gcode.autoreport_paused) {
       TERN_(AUTO_REPORT_TEMPERATURES, thermalManager.auto_reporter.tick());
       TERN_(AUTO_REPORT_SD_STATUS, card.auto_reporter.tick());
+      TERN_(AUTO_REPORT_POSITION, position_auto_reporter.tick());
     }
   #endif
 
