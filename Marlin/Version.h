@@ -26,9 +26,9 @@
 ////////////////////////////////////
 
 /**
- * Marlin release version identifier //BASED on 2.0.8
+ * Marlin release version identifier //BASED on 2.0.8.01
  */
-#define SHORT_BUILD_VERSION "2022.0.2"
+#define SHORT_BUILD_VERSION "2022.0.3"
 
 /**
  * Verbose version identifier which should contain a reference to the location
