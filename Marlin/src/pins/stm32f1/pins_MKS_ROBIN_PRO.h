@@ -45,12 +45,12 @@
 #define SPI_CHAN_EEPROM1                        2
 #define SPI_EEPROM1_CS                          PB12 
 #define MARLIN_EEPROM_SIZE 						0x1000   // 4KB
-#define E2END 									0xFFF
+//#define E2END 									0xFFF
 
 // Note: MKS Robin board is using SPI2 interface.
 //
 #define SPI_DEVICE                             2
-#define SPI_MODULE                           2 //Replaced by SPI_DEVICE in 2.0.8?
+//#define SPI_MODULE                           2 //Replaced by SPI_DEVICE in 2.0.8?
 #define ENABLE_SPI2
 
 //
@@ -292,7 +292,7 @@
   #define BOARD_ST7920_DELAY_3     DELAY_NS(750)  //DELAY_NS(125) JGMaker
 #endif
 
-#define SPI_FLASH
+//#define SPI_FLASH
 #define HAS_SPI_FLASH                          1
 #if HAS_SPI_FLASH
   #define SPI_FLASH_SIZE               0x1000000  // 16MB
