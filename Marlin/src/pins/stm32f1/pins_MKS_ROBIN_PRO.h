@@ -40,8 +40,7 @@
 //
 #define DISABLE_DEBUG
 
-//#define  SDCARD_EEPROM_EMULATION
-
+//
 #define SPI_EEPROM
 #define SPI_CHAN_EEPROM1                        2
 #define SPI_EEPROM1_CS                          PB12 
@@ -142,6 +141,9 @@
   //#define E1_HARDWARE_SERIAL MSerial1
   //#define E2_HARDWARE_SERIAL MSerial1
 
+  //
+  // Software serial
+  //
   #define X_SERIAL_TX_PIN                   PF7
   #define X_SERIAL_RX_PIN                   PF8
 
@@ -181,16 +183,16 @@
 /**
  * Note: MKS Robin Pro board is using SPI2 interface. Make sure your stm32duino library is configured accordingly
  */
-//#define TEMP_0_CS_PIN                     PE5   // TC1 - CS1
-//#define TEMP_0_CS_PIN                     PF11  // TC2 - CS2
+//#define MAX6675_SS_PIN                    PE5   // TC1 - CS1
+//#define MAX6675_SS_PIN                    PF11  // TC2 - CS2
 
 #define POWER_LOSS_PIN                      PA2   // PW_DET
+#define PS_ON_PIN                           PG11  // PW_OFF
 #define FIL_RUNOUT_PIN                      PA4   // MT_DET1
 #define FIL_RUNOUT2_PIN                     PE6   // MT_DET2
 #define FIL_RUNOUT3_PIN                     PG14  // MT_DET3
 
 //
-#define PS_ON_PIN                           PG11  // PW_OFF
 // SD Card
 //
 #ifndef SDCARD_CONNECTION
@@ -211,14 +213,11 @@
   #error "No custom SD drive cable defined for this board."
 #endif
 
-//
-// TFT with FSMC interface
-//
-  /**
-   * Note: MKS Robin TFT screens use various TFT controllers.
-   * If the screen stays white, disable 'LCD_RESET_PIN'
-   * to let the bootloader init the screen.
-   */
+/**
+ * Note: MKS Robin TFT screens use various TFT controllers.
+ * If the screen stays white, disable 'LCD_RESET_PIN'
+ * to let the bootloader init the screen.
+ */
 #if HAS_FSMC_GRAPHICAL_TFT
   #define FSMC_CS_PIN                       PD7   // NE4
   #define FSMC_RS_PIN                       PD11  // A0
@@ -283,7 +282,6 @@
 
 #endif
 
-// Alter timing for graphical display
 #ifndef BOARD_ST7920_DELAY_1
   #define BOARD_ST7920_DELAY_1     DELAY_NS(750)  //DELAY_NS(125) JGMaker
 #endif
@@ -294,15 +292,12 @@
   #define BOARD_ST7920_DELAY_3     DELAY_NS(750)  //DELAY_NS(125) JGMaker
 #endif
 
-
-//SPI FLASH
 #define SPI_FLASH
 #define HAS_SPI_FLASH                          1
 #if HAS_SPI_FLASH
   #define SPI_FLASH_SIZE               0x1000000  // 16MB
-  #define W25QXX_CS_PIN                  PB12  // Flash chip-select
-  #define W25QXX_MOSI_PIN                PB15
-  #define W25QXX_MISO_PIN                PB14
-  #define W25QXX_SCK_PIN                 PB13
+  #define W25QXX_CS_PIN                     PB12  // Flash chip-select
+  #define W25QXX_MOSI_PIN                   PB15
+  #define W25QXX_MISO_PIN                   PB14
+  #define W25QXX_SCK_PIN                    PB13
 #endif
-
